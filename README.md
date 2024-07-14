@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Suspense
 
-## Getting Started
+- Data fetching should be placed close to the component that needs it
+- Suspense should be placed outside of the compoennt that fetches the data
 
-First, run the development server:
+# Error
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Errorboundary in Nextjs is a client component
+- It's a client component cos it accepts a reset prop that uses click event
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## SSR(Static vs Dynamic)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Server and client are render on the server on initial render
+- SSR is splited by route in Nextjs
+-       -> Each router can either be static(prerender) or dynamic
+        -> PPR(Partial prerendering) is a mix of the two
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# STATIC RENDERING
 
-## Learn More
+- HTML is generated at build time, or periodically by re-fetching
+-           -> Useful when data doesn't change often and is not personalized to user
 
-To learn more about Next.js, take a look at the following resources:
+## DYNAMIC RENDERING
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- HTML is generated at request time by the user
+-           -> Used when data changes frequesntly
+            -> Rendering a route requires information that depends on request(e.g search params)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# N.B: Nextjs routes are usually generated staticly but swictches to dynamic in the following scenario
 
-## Deploy on Vercel
+- 1. The route has a dynamic segment( page uses params)
+- 2. searchParams are used in page component
+- 3. headers() or cookies() re used in any of the route server component
+- 4. An uncached data request is made in any route server component
+-           ->We can force Nextjs to render a route dynamically using
+            - 1. export const force dynamic = 'force-dynamic' from page.js
+            - 2. export const revalidate = 0 from page.js
+            - 3. {cache: 'no-store} added to a fetch request in any of the route server component
+            - 4. noStore() in any of the server component
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Some Terminology
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Content Delivery Network (CDN): A network of servers located around the globe that cache and deliver a website static content (HTML, CSS JS) from as close as possible to each user
+
+- Serverless computing: It allow us run server application code, majorly backend code without managing the server ourselves. We instead run a single function on a cloud provider: serverless function.
+- The server is initailzed and active only for the duration the serverless funtion is running, unlike a traditionla Nodejs app where the server is constantly running
+
+## generateStaticParams
+
+- Usefulfor making dynamic page to static by getting all the possible dynamic ids beforehand

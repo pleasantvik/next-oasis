@@ -6,14 +6,20 @@
     "dev": "next dev --port 5200",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prod": "next build && next start"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.4",
+    "@supabase/supabase-js": "^2.44.2",
+    "date-fns": "^3.6.0",
     "next": "14.2.4",
     "react": "^18",
+    "react-day-picker": "^8.10.1",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/react": "18.3.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "eslint-config-prettier": "^9.1.0",
