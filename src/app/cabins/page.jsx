@@ -4,6 +4,7 @@ import { getCabins } from "../_lib/data-service";
 import CabinList from "./CabinList";
 import Spinner from "../_components/Spinner";
 import Filter from "../_components/Filter";
+import ReservationReminder from "../_components/ReservationReminder";
 export const revalidate = 3600; // time in seconds
 export const metadata = {
   title: "Cabins",
@@ -30,6 +31,7 @@ const CabinsPage = async ({ searchParams }) => {
       </div>
       <Suspense fallback={<Spinner />} key={filter}>
         <CabinList filter={filter} />
+        <ReservationReminder />
       </Suspense>
     </div>
   );
