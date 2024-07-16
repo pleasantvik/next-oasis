@@ -1,8 +1,13 @@
 import ReservationCard from "../../_components/ReservationCard";
 import React from "react";
+import { getBookings } from "../../_lib/data-service";
+import { auth } from "../../_lib/auth";
+import Link from "next/link";
+import ReservationList from "../../_components/ReservationList";
 
-const ReservationPage = () => {
-  const bookings = [];
+const ReservationPage = async () => {
+  const session = await auth();
+  const bookings = await getBookings(session?.user?.guestId);
 
   return (
     <div>
@@ -10,19 +15,15 @@ const ReservationPage = () => {
         Your reservations
       </h2>
 
-      {bookings.length === 0 ? (
+      {bookings?.length === 0 ? (
         <p className="text-lg">
           You have no reservations yet. Check out our{" "}
-          <a className="underline text-accent-500" href="/cabins">
+          <Link className="underline text-accent-500" href="/cabins">
             luxury cabins &rarr;
-          </a>
+          </Link>
         </p>
       ) : (
-        <ul className="space-y-6">
-          {bookings.map((booking) => (
-            <ReservationCard booking={booking} key={booking.id} />
-          ))}
-        </ul>
+        <ReservationList bookings={bookings} />
       )}
     </div>
   );
